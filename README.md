@@ -1,4 +1,4 @@
-# Timing-in-Robotic (UBUNTU)
+# Timing-in-Robotic (in Linux OS)
 For the pthread:
 compile
 g++ -fext-numeric-literals pthread.cpp -lpthread -o pthread 
