@@ -10,9 +10,9 @@ void *periodic_task(void *)
 
     timespec prev_end_time;
     clock_gettime(CLOCK_MONOTONIC, &prev_end_time);
-    
-    const int num_iterations = 10000000;
-    double iteration_durations[num_iterations];
+
+    const int num_iterations = 10;
+    double *iteration_durations = new double[num_iterations];
 
     for (int i = 0; i < num_iterations; i++)
     {
@@ -23,7 +23,7 @@ void *periodic_task(void *)
         clock_gettime(CLOCK_MONOTONIC, &iteration_end_time);
 
         double iteration_duration = (iteration_end_time.tv_sec - prev_end_time.tv_sec) * 1000.0 + (iteration_end_time.tv_nsec - prev_end_time.tv_nsec) / 1000000.0;
-        
+
         iteration_durations[i] = iteration_duration;
 
         prev_end_time = iteration_end_time;
@@ -35,18 +35,16 @@ void *periodic_task(void *)
             next_time.tv_sec += 1;
             next_time.tv_nsec -= 1000000000;
         }
-         clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &next_time, NULL);
+        clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &next_time, NULL);
     }
-    
+
     // Print the iteration durations
     for (int i = 0; i < num_iterations; i++)
     {
         std::cout << "Iteration " << i << " duration: " << iteration_durations[i] << " ms" << std::endl;
     }
-
+    delete[] iteration_durations; // don't forget to free the memory!
     return NULL;
-
-
 }
 
 int main()
