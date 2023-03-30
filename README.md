@@ -1,26 +1,15 @@
-# Timing-in-Robotic (in Linux OS)
-For the pthread:
-compile
-g++ -fext-numeric-literals pthread.cpp -lpthread -o pthread 
+# closed_loop node
 
-run
-./pthread
+This node implements a closed loop controller for the Jiwy simulator of assignment 1 for ASDfR.
 
-stress --cpu 2
+# Usage 
+* Unzip into your ROS2 workspace
+* `colcon build`
+* Then, in another terminal:
+* `. install\local_setup.sh`
+* `ros2 run closed_loop controller`
 
-htop
-
-For myprogram:
-The code uses the Xenomai-specific rt_task_create() and rt_task_start() functions to create and start a real-time task. The task is set to have a default priority and mode, but this can be adjusted as needed.
-The periodic_task() function performs some simple computational work (in this case, calculating the sine of the loop index) and then sleeps for a fixed period of 1 ms using clock_nanosleep().
-The code also uses the clock_gettime() function to get a precise timestamp for each loop iteration, which can be used to calculate the jitter.
-To compile the code for Xenomai, you will need to use the xeno-config utility to get the required compiler and linker options. Here's an example compilation command:
-
-g++ -o myprogram myprogram.cpp `xeno-config --skin=native --cflags --ldflags`
-
-To run the program, you will need to first start the Xenomai real-time environment using the xenomai command, and then run the program using sudo to ensure that it has the necessary privileges:
-
-sudo xenomai
-sudo ./myprogram
-
-
+# Hints
+* Have a look in the code to see the topic names, available parameters etc. You might want to change the code so that it matches your choices on e.g. the image size from your webcam.
+* Do not forget to set the appropriate topic remappings in the latter command.
+* We recommend to use a launch file for launching all ROS2 nodes simultaneously.
